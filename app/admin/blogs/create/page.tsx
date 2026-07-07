@@ -45,6 +45,7 @@ export default function CreateBlogPage() {
     coverImage: "",
     coverImageAlt: "",
     status: "draft",
+    schemaMarkup: "",
   });
 
   useEffect(() => {
@@ -133,6 +134,7 @@ export default function CreateBlogPage() {
             status: form.status,
             coverImageAlt: form.coverImageAlt,
             coverImage: coverImageUrl,
+            schemaMarkup: form.schemaMarkup,
           }),
           credentials: "include",
         },
@@ -275,6 +277,18 @@ export default function CreateBlogPage() {
                   </SelectGroup>
                 </SelectContent>
               </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="schemaMarkup">Schema Markup (JSON-LD)</Label>
+              <Textarea
+                id="schemaMarkup"
+                value={form.schemaMarkup}
+                onChange={(e) => setForm({ ...form, schemaMarkup: e.target.value })}
+                placeholder='{&#10;  "@context": "https://schema.org",&#10;  "@graph": []&#10;}'
+                rows={10}
+                className="font-mono text-sm leading-relaxed"
+              />
             </div>
 
             <div className="flex gap-2 justify-end bg-card border-t borer-gray-200 px-4 py-3 sticky bottom-0 rounded-b-lg">

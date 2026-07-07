@@ -24,6 +24,7 @@ interface BlogData {
   details: string;
   coverImage: string;
   coverImageAlt: string;
+  schemaMarkup: string;
   status: string;
   created_at: string;
   updated_at: string;
@@ -35,12 +36,19 @@ function readingTime(html: string): number {
   return Math.max(1, Math.ceil(words / 200));
 }
 
-export function BlogDetailClient({ slug }: { slug: string }) {
-  const [blog, setBlog] = useState<BlogData | null>(null);
-  const [loading, setLoading] = useState(true);
+export function BlogDetailClient({
+  slug,
+  initialBlog,
+}: {
+  slug: string;
+  initialBlog?: BlogData | null;
+}) {
+  const [blog, setBlog] = useState<BlogData | null>(initialBlog ?? null);
+  const [loading, setLoading] = useState(!initialBlog);
   const [error, setError] = useState("");
 
   useEffect(() => {
+    if (initialBlog) return;
     let cancelled = false;
     const fetchBlog = async () => {
       try {
@@ -60,7 +68,7 @@ export function BlogDetailClient({ slug }: { slug: string }) {
     };
     fetchBlog();
     return () => { cancelled = true; };
-  }, [slug]);
+  }, [slug, initialBlog]);
 
   if (loading) {
     return (
